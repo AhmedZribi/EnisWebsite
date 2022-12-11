@@ -1,0 +1,106 @@
+﻿@model IEnumerable<EnisProject.Models.Internship>
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (!SignInManager.IsSignedIn(User))
+{
+    <div class="text-center text-danger">
+        <h6>Please Sign In To Your Account!</h6>
+    </div>
+} else {
+    @if ((User.IsInRole(Constants.Roles.AdminRole) ==false && User.IsInRole(Constants.Roles.StRole) ==false && User.IsInRole(Constants.Roles.ProRole) == false))
+    {
+        <div class="text-center text-danger">
+            <h6>Your Account Is Awaiting Confirmation!</h6>
+        </div>
+    }
+}
+
+<div class="container-fluid">
+    <div class="text-center bg-image" style="
+              background-image: url('https://www.histoiredesfax.com/wp-content/uploads/2016/12/enis-Ecole-Nationale-ingenieurs-de-Sfax.jpg');
+              background-repeat: no-repeat;
+              background-size: cover;
+              height: 400px;
+            ">
+        <div class="mask p-5 h-100" style="background-color: rgba(0, 0, 0, 0.6);">
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <div class="text-white">
+                    <h4 class="mb-3">
+                        The National School of Engineers of Sfax or ENIS is a Tunisian engineering school attached to the University of Sfax.
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-4">
+    <h2 class="text-center">Internships</h2>
+    <div class="d-flex justify-content-around flex-wrap">
+        @if (Model != null) {
+
+        @foreach (var item in Model)
+        {
+        <div class="d-flex flex-column justify-content-around col-3 m-2">
+        <div class="text-center">
+        <h5>@Html.DisplayFor(modelItem => item.InternshipHeader)</h5>
+        </div>
+        <div class="d-flex align-items-center justify-content-center">
+
+        <img src="data:image/*;base64,@Convert.ToBase64String(item.InternshipPicture)" class="img-thumbnail w-25" />
+        </div>
+        <h6>@Html.DisplayFor(modelItem => item.InternshipInfo)</h6>
+        <p class="text-center">@Html.DisplayFor(modelItem => item.InternshipLocation)</p>
+        <button class="btn btn-primary "><a class="text-light" asp-controller="Internships" asp-action="Details" asp-route-id="@item.InternshipId">Read More</a></button>
+        </div>
+        }
+        }
+    </div>
+</div>
+<div class="mt-4 mb-4">
+    <div class="mb-4 text-center">
+        <h2 class="text-uppercase">
+            enis in numbers
+        </h2>
+    </div>
+    <div class="d-flex justify-content-around">
+        <div class="d-flex flex-column align-items-center justify-content-around">
+            <img src="https://enis.rnu.tn/useruploads/banners/detailEtudiant.png" alt="etudiant" />
+            <div class="text-center d-flex flex-column">
+                <span class="text-warning h5">1054</span>
+                Engineer Students
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center justify-content-around">
+            <img src="https://enis.rnu.tn/useruploads/banners/detailDoctorant.png" alt="doctorant" />
+            <div class="text-center d-flex flex-column">
+                <span class="text-secondary h5">+700</span>
+                PhD Students
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center justify-content-around">
+            <img src="https://enis.rnu.tn/useruploads/banners/detailDepartement.png" alt="departement" />
+            <div class="text-center d-flex flex-column">
+                <span class="text-primary h5">7</span>
+                Engineering Department
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center justify-content-around">
+            <img src="https://enis.rnu.tn/useruploads/banners/detailUniversity.png" alt="entreprise" />
+            <div class="text-center d-flex flex-column">
+                <span class="text-danger h5">+60</span>
+                Partner Universities
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center justify-content-around">
+            <img src="https://enis.rnu.tn/useruploads/banners/detailEntreprise.png" alt="entreprise" />
+            <div class="text-center d-flex flex-column">
+                <span class="text-success h5">2500</span>
+                Partner Enterprises
+            </div>
+        </div>
+    </div>
+</div>

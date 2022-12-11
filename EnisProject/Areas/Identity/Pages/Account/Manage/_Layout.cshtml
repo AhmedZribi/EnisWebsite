@@ -1,0 +1,35 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+@if ((User.IsInRole(Constants.Roles.AdminRole) == false && User.IsInRole(Constants.Roles.StRole) == false && User.IsInRole(Constants.Roles.ProRole) == false))
+{
+    <div class="text-center text-danger">
+        <h6>Your Account Is Awaiting Confirmation!</h6>
+    </div>
+} else {
+
+    <h1>Manage your account</h1>
+
+    <div>
+        <h2>Change your account settings</h2>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                <partial name="_ManageNav" />
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

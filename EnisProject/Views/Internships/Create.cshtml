@@ -1,0 +1,66 @@
+﻿@model EnisProject.Models.Internship
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Internship</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InternshipHeader" class="control-label"></label>
+                <input asp-for="InternshipHeader" class="form-control" />
+                <span asp-validation-for="InternshipHeader" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InternshipInfo" class="control-label"></label>
+                <input asp-for="InternshipInfo" class="form-control" />
+                <span asp-validation-for="InternshipInfo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*@if (Model.InternshipPicture != null ) {
+                    <img id="intPic" alt="pic" class="profile-picture" src="data:image/*;base64,@Convert.ToBase64String(Model.InternshipPicture)" />
+                } else {
+                    <img id="intPic" alt="pic" class="profile-picture" src="~/images/default.png" />
+                }*@
+                <div class="custom-file mt-2">
+                    <input
+                        type="file"
+                        asp-for="InternshipPicture" 
+                        class="custom-file-input"
+                        accept="image/*"
+                        onchange="document.getElementById('intPic').src =window.URL.createObjectURL(this.files[0])"
+                        />
+                    <label asp-for="InternshipPicture" class="custom-file-label">Choose a picture..</label>
+                    <span asp-validation-for="InternshipPicture" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="InternshipLocation" class="control-label"></label>
+                <input asp-for="InternshipLocation" class="form-control" />
+                <span asp-validation-for="InternshipLocation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialityId" class="control-label"></label>
+                <select asp-for="SpecialityId" class ="form-control" asp-items="ViewBag.SpecialityId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

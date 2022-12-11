@@ -1,0 +1,38 @@
+﻿@model IEnumerable<EnisProject.Models.Internship>
+@inject EnisProject.Data.EnisContext Context
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Internships";
+}
+
+<form asp-controller="Home" asp-action="ListInternships" asp-route-userId="@UserManager.GetUserId(User)">
+    <p>
+        Name: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<div class="d-flex justify-content-around flex-wrap">
+    @foreach (var item in Model)
+    {
+        <div class="d-flex flex-column justify-content-around col-3 m-2">
+            <div class="text-center">
+                <h5>@Html.DisplayFor(modelItem => item.InternshipHeader)</h5>
+            </div>
+            <div class="d-flex align-items-center justify-content-center">
+                <img src="data:image/*;base64,@Convert.ToBase64String(item.InternshipPicture)" class="img-thumbnail w-25" />
+            </div>
+            <h6>@Html.DisplayFor(modelItem => item.InternshipInfo)</h6>
+            @if (item.SpecialityId != null)
+            {
+                var spec = await Context.Speciality.FindAsync(item.SpecialityId);
+                <h6>Speciality : @spec.Name</h6>
+            }
+            <p class="text-center">@Html.DisplayFor(modelItem => item.InternshipLocation)</p>
+            <div>
+                <a class="btn btn-primary">Check Details</a>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<EnisProject.Models.ApplicationUser>
+@inject EnisProject.Data.EnisContext Context
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Professors";
+}
+
+<form asp-controller="Home" asp-action="ListProfessors" asp-route-userId="@UserManager.GetUserId(User)">
+    <p>
+        Name: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<hr/>
+List of Available Supervising Professors
+<hr />
+<table class="table table-bordered table-dark">
+    <thead>
+        <tr>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Email</th>
+            <th scope="col">Speciality</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prof in Model)
+        {
+            <tr>
+                <td>@prof.FirstName</td>
+                <td>@prof.LastName</td>
+                <td>@prof.Email</td>
+                @if (prof.SpecialityId != null)
+                {
+                    var spec = await Context.Speciality.FindAsync(prof.SpecialityId);
+                    <td>@spec.Name</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
